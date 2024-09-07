@@ -23,20 +23,39 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('model-container').appendChild(renderer.domElement);
 
+    // Variables for scaling animation
+    var scaleDirection = 1; // 1 for growing, -1 for shrinking
+    var scaleSpeed = 0.001; // Speed of scaling
+    var minScale = 0.8; // Minimum scale size
+    var maxScale = 1.2; // Maximum scale size
+
     // Load the GLB model
     var loader = new THREE.GLTFLoader();
     loader.load('cmon bro.glb', function(gltf) {
       var model = gltf.scene;
       scene.add(model);
 
-      // Position and scale the model
+      // Initial position and scale
       model.position.set(0, 0, 0);
-      model.scale.set(1, 1, 1);
+      model.scale.set(1, 1, 1); // Initial scale
 
-      // Rotation animation
+      // Rotation and scaling animation
       var animate = function() {
         requestAnimationFrame(animate);
-        model.rotation.y += 0.01; // Adjust rotation speed here
+
+        // Slower rotation
+        model.rotation.y += 0.005; // Slow down the rotation
+
+        // Growing and shrinking the model
+        model.scale.x += scaleSpeed * scaleDirection;
+        model.scale.y += scaleSpeed * scaleDirection;
+        model.scale.z += scaleSpeed * scaleDirection;
+
+        // Reverse direction if the scale reaches min or max limits
+        if (model.scale.x >= maxScale || model.scale.x <= minScale) {
+          scaleDirection *= -1; // Change the direction of scaling
+        }
+
         renderer.render(scene, camera);
       };
       animate();
