@@ -17,17 +17,12 @@
   <script>
     // Setup Scene, Camera, Renderer
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000); // Adjusted FOV for better perspective
-    var renderer = new THREE.WebGLRenderer({ antialias: true }); // Enable antialiasing for smoother edges
-    renderer.setPixelRatio(window.devicePixelRatio); // High pixel ratio for sharp rendering
+    var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0xE1E0E5);  // Set background color to #E1E0E5
     document.getElementById('model-container').appendChild(renderer.domElement);
-
-    // Variables for scaling animation
-    var scaleDirection = 1; // 1 for growing, -1 for shrinking
-    var scaleSpeed = 0.001; // Speed of scaling
-    var minScale = 0.8; // Minimum scale size
-    var maxScale = 1.2; // Maximum scale size
 
     // Load the GLB model
     var loader = new THREE.GLTFLoader();
@@ -37,44 +32,46 @@
 
       // Initial position and scale
       model.position.set(0, 0, 0);
-      model.scale.set(1, 1, 1); // Initial scale
+      model.scale.set(1, 1, 1);
 
       // Rotation and scaling animation
+      var scaleDirection = 1;
+      var scaleSpeed = 0.001;
+      var minScale = 0.8;
+      var maxScale = 1.2;
+      
       var animate = function() {
         requestAnimationFrame(animate);
-
-        // Slower rotation
-        model.rotation.y += 0.005; // Slow down the rotation
+        
+        model.rotation.y += 0.005;  // Slow rotation
 
         // Growing and shrinking the model
         model.scale.x += scaleSpeed * scaleDirection;
         model.scale.y += scaleSpeed * scaleDirection;
         model.scale.z += scaleSpeed * scaleDirection;
 
-        // Reverse direction if the scale reaches min or max limits
+        // Reverse direction if the scale reaches limits
         if (model.scale.x >= maxScale || model.scale.x <= minScale) {
-          scaleDirection *= -1; // Change the direction of scaling
+          scaleDirection *= -1;
         }
 
         renderer.render(scene, camera);
       };
       animate();
-    }, undefined, function(error) {
-      console.error('An error occurred loading the model: ', error);
     });
 
-    // Add Lighting to the Scene
-    var ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft ambient light to make the model visible
+    // Add lighting
+    var ambientLight = new THREE.AmbientLight(0x404040, 2);
     scene.add(ambientLight);
 
     var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(5, 5, 5).normalize();
     scene.add(directionalLight);
 
-    // Set Camera Position
+    // Set camera position
     camera.position.z = 5;
 
-    // Resize the canvas on window resize
+    // Adjust canvas on window resize
     window.addEventListener('resize', function() {
       var width = window.innerWidth;
       var height = window.innerHeight;
