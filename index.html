@@ -17,8 +17,9 @@
   <script>
     // Setup Scene, Camera, Renderer
     var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer();
+    var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000); // Adjusted FOV for better perspective
+    var renderer = new THREE.WebGLRenderer({ antialias: true }); // Enable antialiasing for smoother edges
+    renderer.setPixelRatio(window.devicePixelRatio); // High pixel ratio for sharp rendering
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('model-container').appendChild(renderer.domElement);
 
@@ -44,9 +45,12 @@
     });
 
     // Add Lighting to the Scene
-    var light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(5, 5, 5).normalize();
-    scene.add(light);
+    var ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft ambient light to make the model visible
+    scene.add(ambientLight);
+
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 5, 5).normalize();
+    scene.add(directionalLight);
 
     // Set Camera Position
     camera.position.z = 5;
@@ -62,4 +66,3 @@
   </script>
 </body>
 </html>
-
