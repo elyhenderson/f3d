@@ -6,7 +6,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <style>
-    body { margin: 0; }
+    body { margin: 0; height: 2000px; }  /* Height extended to test scrolling */
     canvas { display: block; }
   </style>
   <title>3D Model Viewer</title>
@@ -26,35 +26,18 @@
 
     // Load the GLB model
     var loader = new THREE.GLTFLoader();
+    var model;
     loader.load('cmon bro.glb', function(gltf) {
-      var model = gltf.scene;
+      model = gltf.scene;
       scene.add(model);
 
       // Initial position and scale
       model.position.set(0, 0, 0);
       model.scale.set(1, 1, 1);
 
-      // Rotation and scaling animation
-      var scaleDirection = 1;
-      var scaleSpeed = 0.001;
-      var minScale = 0.8;
-      var maxScale = 1.2;
-      
       var animate = function() {
         requestAnimationFrame(animate);
-        
         model.rotation.y += 0.005;  // Slow rotation
-
-        // Growing and shrinking the model
-        model.scale.x += scaleSpeed * scaleDirection;
-        model.scale.y += scaleSpeed * scaleDirection;
-        model.scale.z += scaleSpeed * scaleDirection;
-
-        // Reverse direction if the scale reaches limits
-        if (model.scale.x >= maxScale || model.scale.x <= minScale) {
-          scaleDirection *= -1;
-        }
-
         renderer.render(scene, camera);
       };
       animate();
@@ -79,6 +62,20 @@
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
     });
+
+    // Scroll event listener to move and scale the model
+    window.onscroll = function() {
+      if (model) {
+        var scrollY = window.scrollY || window.pageYOffset;  // Get scroll position
+
+        // Scale the model as you scroll (scale increases with scroll)
+        var scaleFactor = 1 + scrollY / 1000;  // Adjust this factor to control the scaling speed
+        model.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+        // Move the model along the Y-axis as you scroll
+        model.position.y = scrollY / 100;  // Adjust this value to control movement speed
+      }
+    };
   </script>
 </body>
 </html>
