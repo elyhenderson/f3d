@@ -6,39 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Spline Design</title>
     <style>
-        /* Ensure full height and width of the page */
         body, html {
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* This is important to ensure scrolling behavior works only in the wrapper */
+            overflow: hidden;
         }
 
-        /* Wrapper around the Spline viewer */
-        .spline-wrapper {
+        iframe {
             width: 100vw;
             height: 100vh;
-            overflow: auto; /* Enable scrolling within the wrapper */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+            border: none;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
         }
-
-        /* Style the spline-viewer to take up full screen */
-        spline-viewer {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- Wrapper around the Spline Viewer -->
-    <div class="spline-wrapper">
-        <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.25/build/spline-viewer.js"></script>
-        <spline-viewer url="https://prod.spline.design/riyyfXMmVHyRMgdR/scene.splinecode"></spline-viewer>
-    </div>
+    <!-- Embedding the Spline design inside an iframe -->
+    <iframe src="https://prod.spline.design/riyyfXMmVHyRMgdR/scene.splinecode"></iframe>
 
 </body>
 </html>
