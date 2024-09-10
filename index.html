@@ -12,7 +12,7 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
-            overflow: visible; /* Make sure overflow is not hidden */
+            overflow: visible;
         }
 
         /* Style the spline-viewer to take up full screen */
@@ -20,7 +20,16 @@
             width: 100vw;
             height: 100vh;
             display: block;
-            overflow: visible; /* Ensure content isn't clipped */
+            overflow: visible;
+            touch-action: pan-y; /* Ensure vertical scroll works on touch */
+        }
+
+        @media only screen and (max-width: 600px) {
+            spline-viewer {
+                height: 100%; /* Adjust height for mobile screens */
+                overflow-y: auto; /* Ensure vertical scroll on mobile */
+                touch-action: pan-y; /* Ensure vertical scroll works on touch */
+            }
         }
     </style>
 </head>
